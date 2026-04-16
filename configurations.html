@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAP Control — Configurations</title>
+    <link rel="shortcut icon" href="media/logo.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="style/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+</head>
+
+<body>
+    <div class="app">
+
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <div class="logo-mark">
+                    <div class="logo-icon">
+                        <img src="media/logo.jpg" height="50px" width="50px">
+                    </div>
+                    <div>
+                        <div class="logo-name">Mobwizards</div>
+                        <div class="logo-sub">Control Panel</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-label">Overview</div>
+                <div class="nav-item" onclick="window.location.href='index.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <rect x="1" y="1" width="6" height="6" rx="1" fill="currentColor" />
+                        <rect x="8" y="1" width="6" height="6" rx="1" fill="currentColor" />
+                        <rect x="1" y="8" width="6" height="6" rx="1" fill="currentColor" />
+                        <rect x="8" y="8" width="6" height="6" rx="1" fill="currentColor" />
+                    </svg>
+                    Dashboard
+                    <span class="nav-badge">4</span>
+                </div>
+                <div class="nav-item" onclick="window.location.href='campaigns.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <path d="M2 3h11M2 7.5h11M2 12h7" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" />
+                    </svg>
+                    Campaigns
+                    <span class="nav-badge">142</span>
+                </div>
+                <div class="nav-item" onclick="window.location.href='metrics.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <path d="M1 12L5 7l3 3 3-4 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    Metrics
+                </div>
+                <div class="nav-item" onclick="window.location.href='comparisons.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <path d="M3 7.5h9M7.5 3v9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                    Comparisons
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-label">Manage</div>
+                <div class="nav-item" onclick="window.location.href='clients.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <circle cx="7.5" cy="5" r="3" stroke="currentColor" stroke-width="1.4" />
+                        <path d="M1.5 13c0-3 2.7-5 6-5s6 2 6 5" stroke="currentColor" stroke-width="1.4"
+                            stroke-linecap="round" />
+                    </svg>
+                    Clients
+                </div>
+                <div class="nav-item" onclick="window.location.href='teams.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <circle cx="5" cy="5" r="2.5" stroke="currentColor" stroke-width="1.4" />
+                        <circle cx="11" cy="5" r="2.5" stroke="currentColor" stroke-width="1.4" />
+                        <path d="M1 13c0-2.5 1.8-4 4-4M8 13c0-2.5 1.8-4 4-4" stroke="currentColor" stroke-width="1.4"
+                            stroke-linecap="round" />
+                    </svg>
+                    Teams
+                </div>
+                <div class="nav-item" onclick="window.location.href='platforms.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <rect x="1" y="3" width="13" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4" />
+                        <path d="M5 12v2M10 12v2M3 14h9" stroke="currentColor" stroke-width="1.4"
+                            stroke-linecap="round" />
+                    </svg>
+                    Platforms
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-label">Config</div>
+                <div class="nav-item active" onclick="window.location.href='configurations.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <circle cx="7.5" cy="7.5" r="2" stroke="currentColor" stroke-width="1.4" />
+                        <path
+                            d="M7.5 1v1.5M7.5 12.5V14M1 7.5h1.5M12.5 7.5H14M2.9 2.9l1.1 1.1M11 11l1.1 1.1M2.9 12.1L4 11M11 4l1.1-1.1"
+                            stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                    </svg>
+                    Configurations
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-pill">
+                    <div class="avatar">-UN-</div>
+                    <div>
+                        <div class="user-name">--UserName--</div>
+                        <div class="user-role">--Role--</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="main">
+            <div class="topbar">
+                <div>
+                    <div class="topbar-title">Configurations</div>
+                </div>
+                <div class="topbar-spacer"></div>
+                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+                    <svg class="icon-moon" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                    </svg>
+                    <svg class="icon-sun" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+                <div class="filter-row">
+                    <input type="text" placeholder="Search client..."
+                        style="background:var(--surface2);border:1px solid var(--border2);color:var(--text);font-family:var(--font-body);font-size:12px;padding:6px 10px;border-radius:var(--radius);outline:none;width:180px;">
+                    <select class="filter-select">
+                        <option>All Statuses</option>
+                        <option>Active</option>
+                        <option>Inactive</option>
+                    </select>
+                    <button class="btn btn-primary">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                            <path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                        </svg>
+                        New Client
+                    </button>
+                </div>
+            </div>
+
+            <div class="content">
+
+                <div class="kpi-grid" style="grid-template-columns: repeat(4, 1fr);">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Active Rules</div>
+                        <div class="kpi-value accent">28</div>
+                        <div class="kpi-delta delta-up">▲ 3 this month</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">API Integrations</div>
+                        <div class="kpi-value">12</div>
+                        <div class="kpi-delta delta-up">All connected</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Notifications</div>
+                        <div class="kpi-value">46</div>
+                        <div class="kpi-delta delta-dn">▼ 5 unresolved</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Environment</div>
+                        <div class="kpi-value positive">Production</div>
+                        <div class="kpi-delta delta-up">Stable</div>
+                    </div>
+                </div>
+
+                <div class="grid-3-1">
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <div class="panel-title">System Settings</div>
+                                <div class="panel-sub">Main configuration groups</div>
+                            </div>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Section</th>
+                                        <th>Description</th>
+                                        <th>Status</th>
+                                        <th class="num">Last Update</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Tracking</td>
+                                        <td>Postbacks, click IDs, and attribution settings</td>
+                                        <td><span class="tag tag-green">Operational</span></td>
+                                        <td class="num">2026-04-15</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Billing Rules</td>
+                                        <td>Payout logic, margin alerts, and invoicing controls</td>
+                                        <td><span class="tag tag-green">Operational</span></td>
+                                        <td class="num">2026-04-14</td>
+                                    </tr>
+                                    <tr>
+                                        <td>User Access</td>
+                                        <td>Permissions, teams, and role mapping</td>
+                                        <td><span class="tag tag-amber">Review</span></td>
+                                        <td class="num">2026-04-12</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Integrations</td>
+                                        <td>External APIs and platform credentials</td>
+                                        <td><span class="tag tag-green">Operational</span></td>
+                                        <td class="num">2026-04-16</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Notifications</td>
+                                        <td>Email, Slack, and internal alert routing</td>
+                                        <td><span class="tag tag-red">Needs update</span></td>
+                                        <td class="num">2026-04-10</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <div class="panel-title">Quick Actions</div>
+                                <div class="panel-sub">Common admin tasks</div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="mini-list">
+                                <div class="mini-row">
+                                    <div class="mini-left">
+                                        <div class="mini-icon tag-blue">API</div>
+                                        <div>
+                                            <div>Refresh credentials</div>
+                                            <div class="mini-sub2">Sync platform tokens</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mini-row">
+                                    <div class="mini-left">
+                                        <div class="mini-icon tag-green">USR</div>
+                                        <div>
+                                            <div>Review user roles</div>
+                                            <div class="mini-sub2">Validate access levels</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mini-row">
+                                    <div class="mini-left">
+                                        <div class="mini-icon tag-amber">ALR</div>
+                                        <div>
+                                            <div>Update alerts</div>
+                                            <div class="mini-sub2">Check notification routing</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mini-row">
+                                    <div class="mini-left">
+                                        <div class="mini-icon tag-purple">CFG</div>
+                                        <div>
+                                            <div>Export settings</div>
+                                            <div class="mini-sub2">Generate backup snapshot</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme') || 'light';
+            const next = current === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        }
+    </script>
+</body>
+
+</html>

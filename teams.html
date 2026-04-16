@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAP Control — Teams</title>
+    <link rel="shortcut icon" href="media/logo.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="style/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+</head>
+
+<body>
+    <div class="app">
+
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <div class="logo-mark">
+                    <div class="logo-icon">
+                        <img src="media/logo.jpg" height="50px" width="50px">
+                    </div>
+                    <div>
+                        <div class="logo-name">Mobwizards</div>
+                        <div class="logo-sub">Control Panel</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-label">Overview</div>
+                <div class="nav-item" onclick="window.location.href='index.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <rect x="1" y="1" width="6" height="6" rx="1" fill="currentColor" />
+                        <rect x="8" y="1" width="6" height="6" rx="1" fill="currentColor" />
+                        <rect x="1" y="8" width="6" height="6" rx="1" fill="currentColor" />
+                        <rect x="8" y="8" width="6" height="6" rx="1" fill="currentColor" />
+                    </svg>
+                    Dashboard
+                    <span class="nav-badge">4</span>
+                </div>
+                <div class="nav-item" onclick="window.location.href='campaigns.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <path d="M2 3h11M2 7.5h11M2 12h7" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" />
+                    </svg>
+                    Campaigns
+                    <span class="nav-badge">142</span>
+                </div>
+                <div class="nav-item" onclick="window.location.href='metrics.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <path d="M1 12L5 7l3 3 3-4 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    Metrics
+                </div>
+                <div class="nav-item" onclick="window.location.href='comparisons.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <path d="M3 7.5h9M7.5 3v9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                    Comparisons
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-label">Gerir</div>
+                <div class="nav-item" onclick="window.location.href='clients.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <circle cx="7.5" cy="5" r="3" stroke="currentColor" stroke-width="1.4" />
+                        <path d="M1.5 13c0-3 2.7-5 6-5s6 2 6 5" stroke="currentColor" stroke-width="1.4"
+                            stroke-linecap="round" />
+                    </svg>
+                    Clients
+                </div>
+                <div class="nav-item active" onclick="window.location.href='teams.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <circle cx="5" cy="5" r="2.5" stroke="currentColor" stroke-width="1.4" />
+                        <circle cx="11" cy="5" r="2.5" stroke="currentColor" stroke-width="1.4" />
+                        <path d="M1 13c0-2.5 1.8-4 4-4M8 13c0-2.5 1.8-4 4-4" stroke="currentColor" stroke-width="1.4"
+                            stroke-linecap="round" />
+                    </svg>
+                    Teams
+                </div>
+                <div class="nav-item" onclick="window.location.href='platforms.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <rect x="1" y="3" width="13" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4" />
+                        <path d="M5 12v2M10 12v2M3 14h9" stroke="currentColor" stroke-width="1.4"
+                            stroke-linecap="round" />
+                    </svg>
+                    Platforms
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-label">Config</div>
+                <div class="nav-item" onclick="window.location.href='configurations.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <circle cx="7.5" cy="7.5" r="2" stroke="currentColor" stroke-width="1.4" />
+                        <path
+                            d="M7.5 1v1.5M7.5 12.5V14M1 7.5h1.5M12.5 7.5H14M2.9 2.9l1.1 1.1M11 11l1.1 1.1M2.9 12.1L4 11M11 4l1.1-1.1"
+                            stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                    </svg>
+                    Configurations
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-pill">
+                    <div class="avatar">-UN-</div>
+                    <div>
+                        <div class="user-name">--UserName--</div>
+                        <div class="user-role">--Role--</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="main">
+            <div class="topbar">
+                <div>
+                    <div class="topbar-title">Teams</div>
+                </div>
+                <div class="topbar-spacer"></div>
+                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+                    <svg class="icon-moon" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                    </svg>
+                    <svg class="icon-sun" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+                <div class="filter-row">
+                    <input type="text" placeholder="Search member..."
+                        style="background:var(--surface2);border:1px solid var(--border2);color:var(--text);font-family:var(--font-body);font-size:12px;padding:6px 10px;border-radius:var(--radius);outline:none;width:180px;">
+                    <select class="filter-select">
+                        <option>All Teams</option>
+                        <option>Performance</option>
+                        <option>Criativo</option>
+                        <option>Analytics</option>
+                    </select>
+                    <button class="btn btn-primary">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                            <path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                        </svg>
+                        New Member
+                    </button>
+                </div>
+            </div>
+
+            <div class="content">
+
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Total Members</div>
+                        <div class="kpi-value accent">18</div>
+                        <div class="kpi-delta delta-up">▲ 1 this month</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Teams</div>
+                        <div class="kpi-value">3</div>
+                        <div class="kpi-sub">Performance · Criativo · Analytics</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Camp./Member</div>
+                        <div class="kpi-value positive">7.9</div>
+                        <div class="kpi-delta delta-up">▲ 0.6 vs prev. month</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Clients/Manager</div>
+                        <div class="kpi-value">4.8</div>
+                        <div class="kpi-sub">Average per manager</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Satisfaction</div>
+                        <div class="kpi-value positive">88%</div>
+                        <div class="kpi-delta delta-up">▲ 3%</div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-head">
+                        <div>
+                            <div class="panel-title">Team Members</div>
+                            <div class="panel-sub">18 active team members</div>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Member</th>
+                                    <th>Team</th>
+                                    <th>Role</th>
+                                    <th class="num">Clients</th>
+                                    <th class="num">Campaigns</th>
+                                    <th class="num">Revenue Gerida (Apr)</th>
+                                    <th class="num">Average ROI</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div style="display:flex;align-items:center;gap:8px;">
+                                            <div class="avatar"
+                                                style="background:linear-gradient(135deg,#c8f135,#4ade80);">--</div>
+                                            <div>
+                                                <div style="font-size:12px;font-weight:500;">--Nome--</div>
+                                                <div style="font-size:10px;color:var(--muted);">since Jan 2023</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="tag tag-green">Performance</span></td>
+                                    <td>Team Lead</td>
+                                    <td class="num">6</td>
+                                    <td class="num">48</td>
+                                    <td class="num">€ 520K</td>
+                                    <td class="num"><span style="color:var(--accent2);">4.41×</span></td>
+                                    <td style="color:var(--muted);font-size:11px;">--@email.com</td>
+                                    <td><span class="tag tag-green"><span
+                                                class="status-dot dot-green"></span>Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="display:flex;align-items:center;gap:8px;">
+                                            <div class="avatar"
+                                                style="background:linear-gradient(135deg,#6091fa,#a78bfa);">--</div>
+                                            <div>
+                                                <div style="font-size:12px;font-weight:500;">--Nome--</div>
+                                                <div style="font-size:10px;color:var(--muted);">since Mar 2023</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="tag tag-blue">Analytics</span></td>
+                                    <td>Analista</td>
+                                    <td class="num">4</td>
+                                    <td class="num">32</td>
+                                    <td class="num">€ 310K</td>
+                                    <td class="num"><span style="color:var(--accent2);">3.98×</span></td>
+                                    <td style="color:var(--muted);font-size:11px;">--@email.com</td>
+                                    <td><span class="tag tag-green"><span
+                                                class="status-dot dot-green"></span>Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="display:flex;align-items:center;gap:8px;">
+                                            <div class="avatar"
+                                                style="background:linear-gradient(135deg,#fbbf24,#f87171);">--</div>
+                                            <div>
+                                                <div style="font-size:12px;font-weight:500;">--Nome--</div>
+                                                <div style="font-size:10px;color:var(--muted);">since Jul 2024</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="tag tag-amber">Criativo</span></td>
+                                    <td>Designer</td>
+                                    <td class="num">3</td>
+                                    <td class="num">21</td>
+                                    <td class="num">€ 198K</td>
+                                    <td class="num"><span style="color:var(--warning);">3.41×</span></td>
+                                    <td style="color:var(--muted);font-size:11px;">--@email.com</td>
+                                    <td><span class="tag tag-green"><span
+                                                class="status-dot dot-green"></span>Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="display:flex;align-items:center;gap:8px;">
+                                            <div class="avatar"
+                                                style="background:linear-gradient(135deg,#a78bfa,#60a5fa);">--</div>
+                                            <div>
+                                                <div style="font-size:12px;font-weight:500;">--Nome--</div>
+                                                <div style="font-size:10px;color:var(--muted);">since Apr 2025</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="tag tag-green">Performance</span></td>
+                                    <td>Especialista</td>
+                                    <td class="num">1</td>
+                                    <td class="num">5</td>
+                                    <td class="num">€ 48K</td>
+                                    <td class="num"><span style="color:var(--muted);">—</span></td>
+                                    <td style="color:var(--muted);font-size:11px;">--@email.com</td>
+                                    <td><span class="tag tag-amber"><span
+                                                class="status-dot dot-amber"></span>Onboarding</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div
+                        style="display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-top:1px solid var(--border);font-size:11px;color:var(--muted);">
+                        <span>Showing 1–12 of 18</span>
+                        <div style="display:flex;gap:4px;">
+                            <button class="btn btn-ghost" style="padding:4px 10px;font-size:11px;">← Previous</button>
+                            <button class="btn btn-ghost"
+                                style="padding:4px 10px;font-size:11px;background:var(--surface2);color:var(--accent);">1</button>
+                            <button class="btn btn-ghost" style="padding:4px 10px;font-size:11px;">2</button>
+                            <button class="btn btn-ghost" style="padding:4px 10px;font-size:11px;">Next →</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme') || 'light';
+            const next = current === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        }
+    </script>
+</body>
+
+</html>

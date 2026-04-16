@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAP Control — Campaigns</title>
+    <link rel="shortcut icon" href="media/logo.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="style/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+</head>
+
+<body>
+    <div class="app">
+
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <div class="logo-mark">
+                    <div class="logo-icon">
+                        <img src="media/logo.jpg" height="50px" width="50px">
+                    </div>
+                    <div>
+                        <div class="logo-name">Mobwizards</div>
+                        <div class="logo-sub">Control Panel</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-label">Overview</div>
+                <div class="nav-item" onclick="window.location.href='index.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <rect x="1" y="1" width="6" height="6" rx="1" fill="currentColor" />
+                        <rect x="8" y="1" width="6" height="6" rx="1" fill="currentColor" />
+                        <rect x="1" y="8" width="6" height="6" rx="1" fill="currentColor" />
+                        <rect x="8" y="8" width="6" height="6" rx="1" fill="currentColor" />
+                    </svg>
+                    Dashboard
+                    <span class="nav-badge">4</span>
+                </div>
+                <div class="nav-item active" onclick="window.location.href='campaigns.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <path d="M2 3h11M2 7.5h11M2 12h7" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" />
+                    </svg>
+                    Campaigns
+                    <span class="nav-badge">142</span>
+                </div>
+                <div class="nav-item" onclick="window.location.href='metrics.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <path d="M1 12L5 7l3 3 3-4 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    Metrics
+                </div>
+                <div class="nav-item" onclick="window.location.href='comparisons.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <path d="M3 7.5h9M7.5 3v9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                    Comparisons
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-label">Gerir</div>
+                <div class="nav-item" onclick="window.location.href='clients.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <circle cx="7.5" cy="5" r="3" stroke="currentColor" stroke-width="1.4" />
+                        <path d="M1.5 13c0-3 2.7-5 6-5s6 2 6 5" stroke="currentColor" stroke-width="1.4"
+                            stroke-linecap="round" />
+                    </svg>
+                    Clients
+                </div>
+                <div class="nav-item" onclick="window.location.href='teams.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <circle cx="5" cy="5" r="2.5" stroke="currentColor" stroke-width="1.4" />
+                        <circle cx="11" cy="5" r="2.5" stroke="currentColor" stroke-width="1.4" />
+                        <path d="M1 13c0-2.5 1.8-4 4-4M8 13c0-2.5 1.8-4 4-4" stroke="currentColor" stroke-width="1.4"
+                            stroke-linecap="round" />
+                    </svg>
+                    Teams
+                </div>
+                <div class="nav-item" onclick="window.location.href='platforms.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <rect x="1" y="3" width="13" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4" />
+                        <path d="M5 12v2M10 12v2M3 14h9" stroke="currentColor" stroke-width="1.4"
+                            stroke-linecap="round" />
+                    </svg>
+                    Platforms
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-label">Config</div>
+                <div class="nav-item" onclick="window.location.href='configurations.html'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <circle cx="7.5" cy="7.5" r="2" stroke="currentColor" stroke-width="1.4" />
+                        <path
+                            d="M7.5 1v1.5M7.5 12.5V14M1 7.5h1.5M12.5 7.5H14M2.9 2.9l1.1 1.1M11 11l1.1 1.1M2.9 12.1L4 11M11 4l1.1-1.1"
+                            stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                    </svg>
+                    Configurations
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-pill">
+                    <div class="avatar">-UN-</div>
+                    <div>
+                        <div class="user-name">--UserName--</div>
+                        <div class="user-role">--Role--</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="main">
+            <div class="topbar">
+                <div>
+                    <div class="topbar-title">Campaigns</div>
+                </div>
+                <div class="topbar-spacer"></div>
+                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+                    <svg class="icon-moon" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                    </svg>
+                    <svg class="icon-sun" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+                <div class="filter-row">
+                    <select class="filter-select">
+                        <option>All Clients</option>
+                        <option>Acme Corp</option>
+                        <option>Beta Media</option>
+                        <option>Gamma Ads</option>
+                        <option>Delta Group</option>
+                        <option>Epsilon Co</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>All Platforms</option>
+                        <option>Google Ads</option>
+                        <option>Meta Ads</option>
+                        <option>TikTok</option>
+                        <option>Outros</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>All Statuses</option>
+                        <option>Active</option>
+                        <option>Paused</option>
+                        <option>Completed</option>
+                    </select>
+                    <button class="btn btn-ghost">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                            <path d="M1 3h10M3 6h6M5 9h2" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" />
+                        </svg>
+                        Filter
+                    </button>
+                    <button class="btn btn-primary">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                            <path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                        </svg>
+                        New Campaign
+                    </button>
+                </div>
+            </div>
+
+            <div class="content">
+
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Total Campaigns</div>
+                        <div class="kpi-value accent">142</div>
+                        <div class="kpi-delta delta-up">▲ 12 vs previous month</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Actives</div>
+                        <div class="kpi-value positive">98</div>
+                        <div class="kpi-delta delta-up">▲ 5 this week</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Paused</div>
+                        <div class="kpi-value">31</div>
+                        <div class="kpi-delta delta-dn">▼ 3 this week</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Completed</div>
+                        <div class="kpi-value">13</div>
+                        <div class="kpi-sub">This month</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Success Rate</div>
+                        <div class="kpi-value positive">87.3%</div>
+                        <div class="kpi-delta delta-up">▲ 2.1%</div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-head">
+                        <div>
+                            <div class="panel-title">All Campaigns</div>
+                            <div class="panel-sub">Apr 2025 — 142 campaigns</div>
+                        </div>
+                        <div style="display:flex;gap:8px;align-items:center;">
+                            <input type="text" placeholder="Search campaign..."
+                                style="background:var(--surface2);border:1px solid var(--border2);color:var(--text);font-family:var(--font-body);font-size:12px;padding:6px 10px;border-radius:var(--radius);outline:none;width:200px;">
+                            <button class="btn btn-ghost" style="font-size:11px;">
+                                <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                                    <path d="M1 2.5h9M3 5.5h5M4.5 8.5h2" stroke="currentColor" stroke-width="1.4"
+                                        stroke-linecap="round" />
+                                </svg>
+                                Export
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Client</th>
+                                    <th>Country</th>
+                                    <th>Platform</th>
+                                    <th>Category</th>
+                                    <th class="num">Cost EUR</th>
+                                    <th class="num">Revenue EUR</th>
+                                    <th class="num">Margin</th>
+                                    <th class="num">CPA</th>
+                                    <th class="num">Conv.</th>
+                                    <th class="num">ROI</th>
+                                    <th>Startet</th>
+                                    <th>Ended</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="chip"
+                                            style="background:var(--surface2);color:var(--muted)">C-0001</span></td>
+                                    <td>--Campaign Name--</td>
+                                    <td>Acme Corp</td>
+                                    <td><span class="tag tag-blue">PT</span></td>
+                                    <td><span class="tag tag-blue">Google Ads</span></td>
+                                    <td><span class="tag tag-purple">E-Commerce</span></td>
+                                    <td class="num">€ 4 200</td>
+                                    <td class="num">€ 14 700</td>
+                                    <td class="num"><span style="color:var(--accent2)">68.2%</span></td>
+                                    <td class="num">€ 2.10</td>
+                                    <td class="num">2 000</td>
+                                    <td class="num"><span style="color:var(--accent2)">3.50×</span></td>
+                                    <td>01 Apr</td>
+                                    <td>30 Apr</td>
+                                    <td><span class="tag tag-green"><span
+                                                class="status-dot dot-green"></span>Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="chip"
+                                            style="background:var(--surface2);color:var(--muted)">C-0002</span></td>
+                                    <td>--Campaign Name--</td>
+                                    <td>Beta Media</td>
+                                    <td><span class="tag tag-blue">ES</span></td>
+                                    <td><span class="tag tag-amber">Meta Ads</span></td>
+                                    <td><span class="tag tag-blue">Lead Gen</span></td>
+                                    <td class="num">€ 6 800</td>
+                                    <td class="num">€ 22 100</td>
+                                    <td class="num"><span style="color:var(--accent2)">69.2%</span></td>
+                                    <td class="num">€ 3.40</td>
+                                    <td class="num">2 000</td>
+                                    <td class="num"><span style="color:var(--accent2)">3.25×</span></td>
+                                    <td>05 Apr</td>
+                                    <td>30 Apr</td>
+                                    <td><span class="tag tag-green"><span
+                                                class="status-dot dot-green"></span>Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="chip"
+                                            style="background:var(--surface2);color:var(--muted)">C-0003</span></td>
+                                    <td>--Campaign Name--</td>
+                                    <td>Gamma Ads</td>
+                                    <td><span class="tag tag-blue">FR</span></td>
+                                    <td><span class="tag tag-purple">TikTok</span></td>
+                                    <td><span class="tag tag-amber">Marca</span></td>
+                                    <td class="num">€ 3 100</td>
+                                    <td class="num">€ 8 900</td>
+                                    <td class="num"><span style="color:var(--warning)">65.2%</span></td>
+                                    <td class="num">€ 5.17</td>
+                                    <td class="num">600</td>
+                                    <td class="num"><span style="color:var(--warning)">2.87×</span></td>
+                                    <td>10 Apr</td>
+                                    <td>25 Apr</td>
+                                    <td><span class="tag tag-amber"><span
+                                                class="status-dot dot-amber"></span>Paused</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="chip"
+                                            style="background:var(--surface2);color:var(--muted)">C-0004</span></td>
+                                    <td>--Campaign Name--</td>
+                                    <td>Delta Group</td>
+                                    <td><span class="tag tag-blue">DE</span></td>
+                                    <td><span class="tag tag-blue">Google Ads</span></td>
+                                    <td><span class="tag tag-green">Retargeting</span></td>
+                                    <td class="num">€ 8 500</td>
+                                    <td class="num">€ 32 300</td>
+                                    <td class="num"><span style="color:var(--accent2)">73.7%</span></td>
+                                    <td class="num">€ 1.89</td>
+                                    <td class="num">4 497</td>
+                                    <td class="num"><span style="color:var(--accent2)">3.80×</span></td>
+                                    <td>01 Apr</td>
+                                    <td>30 Apr</td>
+                                    <td><span class="tag tag-green"><span
+                                                class="status-dot dot-green"></span>Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="chip"
+                                            style="background:var(--surface2);color:var(--muted)">C-0005</span></td>
+                                    <td>--Campaign Name--</td>
+                                    <td>Epsilon Co</td>
+                                    <td><span class="tag tag-blue">IT</span></td>
+                                    <td><span class="tag tag-amber">Meta Ads</span></td>
+                                    <td><span class="tag tag-purple">E-Commerce</span></td>
+                                    <td class="num">€ 2 400</td>
+                                    <td class="num">€ 5 100</td>
+                                    <td class="num"><span style="color:var(--danger)">52.9%</span></td>
+                                    <td class="num">€ 8.00</td>
+                                    <td class="num">300</td>
+                                    <td class="num"><span style="color:var(--danger)">2.13×</span></td>
+                                    <td>15 Mar</td>
+                                    <td>15 Apr</td>
+                                    <td><span class="tag tag-gray"><span class="status-dot"
+                                                style="background:var(--muted)"></span>Completed</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div
+                        style="display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-top:1px solid var(--border);font-size:11px;color:var(--muted);">
+                        <span>Showing 1–12 of 142</span>
+                        <div style="display:flex;gap:4px;">
+                            <button class="btn btn-ghost" style="padding:4px 10px;font-size:11px;">← Previous</button>
+                            <button class="btn btn-ghost"
+                                style="padding:4px 10px;font-size:11px;background:var(--surface2);color:var(--accent);">1</button>
+                            <button class="btn btn-ghost" style="padding:4px 10px;font-size:11px;">2</button>
+                            <button class="btn btn-ghost" style="padding:4px 10px;font-size:11px;">3</button>
+                            <button class="btn btn-ghost" style="padding:4px 10px;font-size:11px;">Next →</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme') || 'light';
+            const next = current === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        }
+    </script>
+</body>
+
+</html>
