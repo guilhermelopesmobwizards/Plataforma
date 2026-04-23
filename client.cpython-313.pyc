@@ -1,0 +1,37 @@
+from django.db import models
+
+
+class Team(models.Model):
+
+    ts_manager = models.CharField(max_length=20, null=True, blank=True)
+    ts_head = models.CharField(max_length=20, null=True, blank=True)
+    client_manager = models.CharField(max_length=20, null=True, blank=True)
+    client_head = models.CharField(max_length=20, null=True, blank=True)
+    fe = models.CharField(max_length=20, null=True, blank=True)  # Front-end
+    be = models.CharField(max_length=20, null=True, blank=True)  # Back-end
+    creative = models.CharField(max_length=20, null=True, blank=True)
+    qa = models.CharField(max_length=20, null=True, blank=True)
+    pm = models.CharField(max_length=20, null=True, blank=True)  # Project Manager
+
+    class Meta:
+        db_table = "team"
+        constraints = [
+            models.UniqueConstraint(
+                fields=[
+                    "ts_manager",
+                    "ts_head",
+                    "client_manager",
+                    "client_head",
+                    "fe",
+                    "be",
+                    "creative",
+                    "qa",
+                    "pm",
+                ],
+                name="team_unique_combination",
+            )
+        ]
+
+    def __str__(self) -> str:
+        parts = [p for p in [self.ts_manager, self.ts_head, self.pm] if p]
+        return " | ".join(parts) or f"Team #{self.pk}"

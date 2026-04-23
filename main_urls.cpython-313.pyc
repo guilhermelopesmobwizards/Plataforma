@@ -1,0 +1,284 @@
+/* =================================================================
+   static/js/index.js
+   Dashboard — all data comes from the Django API, no static values.
+   ================================================================= */
+
+const API_DASHBOARD = "/app/api/dashboard/";
+const API_CAMPAIGNS = "/app/api/campaigns/";
+const CHART_COLORS  = ["#60faf2","#c8f135","#a78bfa","#4ade80","#f97316","#f43f5e","#38bdf8","#facc15"];
+
+let _byMonth    = [];
+let _byPlat     = [];
+let _chartMode  = "revenue";
+let _revChart   = null;
+let _platChart  = null;
+let _currentPage = 1;
+let _totalPages  = 1;
+let _totalCount  = 0;
+let _searchQuery = "";
+let _filterClient = "";
+let _filterMonth  = "";
+
+// ── Formatters ────────────────────────────────────────────────────
+function fmtEur(n) {
+    if (n == null) return "—";
+    n = parseFloat(n);
+    if (n >= 1_000_000) return "€\u00A0" + (n / 1_000_000).toFixed(2) + "M";
+    if (n >= 1_000)     return "€\u00A0" + (n / 1_000).toFixed(1) + "K";
+    return "€\u00A0" + n.toFixed(2);
+}
+function fmtNum(n) { return n == null ? "—" : parseInt(n).toLocaleString("pt-PT"); }
+function fmtRoi(n) { return n == null ? "—" : parseFloat(n).toFixed(2) + "×"; }
+
+// ── KPIs ──────────────────────────────────────────────────────────
+function renderKPIs(t) {
+    document.getElementById("kpi-campaigns").textContent = fmtNum(t.total_campaigns);
+    document.getElementById("kpi-conv").textContent      = fmtNum(t.total_conv);
+    document.getElementById("kpi-revenue").textContent   = fmtEur(t.total_revenue);
+    document.getElementById("kpi-margin").textContent    = fmtEur(t.total_margin);
+    document.getElementById("kpi-roi").textContent       = fmtRoi(t.avg_roi);
+}
+
+// ── Bar chart ─────────────────────────────────────────────────────
+function buildBarData(mode) {
+    const labels = _byMonth.map(m => m.label || m.month_date);
+    const cfgs = {
+        revenue: { key: "revenue", color: "rgba(200,241,53,",  label: "Revenue EUR" },
+        cost:    { key: "cost",    color: "rgba(96,165,250,",   label: "Custo EUR"   },
+        margin:  { key: "margin",  color: "rgba(74,222,128,",   label: "Margem EUR"  },
+    };
+    const cfg = cfgs[mode] || cfgs.revenue;
+    return {
+        labels,
+        datasets: [{
+            label: cfg.label,
+            data: _byMonth.map(m => parseFloat(m[cfg.key]) || 0),
+            backgroundColor: cfg.color + "0.18)",
+            borderColor:     cfg.color + "0.8)",
+            borderWidth: 1.5, borderRadius: 4, borderSkipped: false,
+        }]
+    };
+}
+
+const barOptions = {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+        legend: { display: false },
+        tooltip: {
+            backgroundColor: "#1a1e28", borderColor: "rgba(255,255,255,0.1)", borderWidth: 1,
+            titleColor: "#e8eaf0", bodyColor: "#9ca3af", padding: 10,
+            callbacks: { label: ctx => " " + fmtEur(ctx.parsed.y) }
+        }
+    },
+    scales: {
+        x: { grid: { color: "rgba(255,255,255,0.04)" }, ticks: { color: "#6b7280", font: { size: 11 } } },
+        y: {
+            grid: { color: "rgba(255,255,255,0.04)" },
+            ticks: { color: "#6b7280", font: { size: 10 },
+                callback: v => v >= 1_000_000 ? (v/1_000_000).toFixed(1)+"M" : "€"+Math.round(v/1000)+"K" }
+        }
+    }
+};
+
+function renderBarChart() {
+    if (_revChart) { _revChart.data = buildBarData(_chartMode); _revChart.update(); return; }
+    _revChart = new Chart(document.getElementById("revChart"), { type: "bar", data: buildBarData(_chartMode), options: barOptions });
+}
+
+function switchChartTab(el, mode) {
+    el.closest(".tabs").querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    el.classList.add("active");
+    _chartMode = mode;
+    renderBarChart();
+}
+
+// ── Donut chart ───────────────────────────────────────────────────
+function renderPlatChart() {
+    const labels = _byPlat.map(p => p.platform_name || "Unknown");
+    const costs  = _byPlat.map(p => parseFloat(p.cost) || 0);
+    const total  = costs.reduce((a, b) => a + b, 0);
+
+    if (_platChart) {
+        _platChart.data.labels = labels;
+        _platChart.data.datasets[0].data = costs;
+        _platChart.data.datasets[0].backgroundColor = CHART_COLORS.slice(0, labels.length);
+        _platChart.update();
+    } else {
+        _platChart = new Chart(document.getElementById("platChart"), {
+            type: "doughnut",
+            data: { labels, datasets: [{ data: costs, backgroundColor: CHART_COLORS.slice(0, labels.length), borderWidth: 0, hoverOffset: 4, spacing: 2 }] },
+            options: {
+                responsive: true, maintainAspectRatio: false, cutout: "72%",
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: "#1a1e28", borderColor: "rgba(255,255,255,0.1)", borderWidth: 1,
+                        titleColor: "#e8eaf0", bodyColor: "#9ca3af", padding: 8,
+                        callbacks: { label: ctx => ` ${ctx.label}: ${fmtEur(ctx.parsed)}` }
+                    }
+                }
+            }
+        });
+    }
+
+    const legend = document.getElementById("plat-legend");
+    legend.innerHTML = _byPlat.map((p, i) => {
+        const pct = total > 0 ? ((parseFloat(p.cost) / total) * 100).toFixed(1) : "0";
+        return `<div style="display:flex;align-items:center;justify-content:space-between;font-size:11px;">
+            <span style="display:flex;align-items:center;gap:6px;">
+                <span style="width:8px;height:8px;border-radius:2px;background:${CHART_COLORS[i % CHART_COLORS.length]};display:inline-block;"></span>
+                <span style="color:var(--muted)">${p.platform_name || "Unknown"}</span>
+            </span>
+            <span style="font-family:var(--font-mono);">${pct}%</span>
+        </div>`;
+    }).join("");
+}
+
+// ── Table ─────────────────────────────────────────────────────────
+function statusBadge(okConv, okRev) {
+    if (okConv === "ok" && okRev === "ok")   return `<span class="status-dot dot-green"></span>OK`;
+    if (okConv === "not ok" || okRev === "not ok") return `<span class="status-dot dot-red"></span>Not OK`;
+    return `<span class="status-dot dot-amber"></span>N/A`;
+}
+
+function renderTable(results, count, page, pages) {
+    _totalCount = count; _totalPages = pages; _currentPage = page;
+    const tbody = document.getElementById("table-body");
+
+    if (!results.length) {
+        tbody.innerHTML = `<tr><td colspan="12" style="text-align:center;padding:40px;color:var(--muted);">
+            Sem dados. Importa um ficheiro Excel para começar.
+        </td></tr>`;
+        document.getElementById("table-info").textContent = "0 resultados";
+        document.getElementById("table-sub").textContent  = "0 campanhas";
+        document.getElementById("pagination").innerHTML   = "";
+        return;
+    }
+
+    tbody.innerHTML = results.map(c => {
+        const m  = c.metric     || {};
+        const cp = c.comparison || {};
+        const margin = (parseFloat(m.revenue_eur) || 0) - (parseFloat(m.cost_eur) || 0);
+        const roi = parseFloat(m.roi);
+        return `<tr>
+          <td><span style="font-family:var(--font-mono);color:var(--muted);font-size:11px;">#${c.id}</span></td>
+          <td><span style="font-weight:500;">${c.client || "—"}</span></td>
+          <td><span class="tag tag-gray">${c.country || "—"}</span></td>
+          <td><span class="tag tag-blue">${c.platform || "—"}</span></td>
+          <td><span style="color:var(--muted);font-size:11px;">${c.category || "—"}</span></td>
+          <td class="num">${fmtEur(m.cost_eur)}</td>
+          <td class="num" style="color:var(--accent2);">${fmtEur(m.revenue_eur)}</td>
+          <td class="num" style="color:${margin >= 0 ? "var(--accent2)" : "var(--danger)"};">${fmtEur(margin)}</td>
+          <td class="num">${m.cpa != null ? parseFloat(m.cpa).toFixed(2) : "—"}</td>
+          <td class="num">${m.conv != null ? fmtNum(m.conv) : "—"}</td>
+          <td class="num" style="color:${roi >= 0.3 ? "var(--accent2)" : roi >= 0.1 ? "var(--warning)" : "var(--danger)"};">
+              ${m.roi != null ? fmtRoi(m.roi) : "—"}</td>
+          <td style="font-size:11px;">${statusBadge(cp.ok_conv, cp.ok_rev)}</td>
+        </tr>`;
+    }).join("");
+
+    document.getElementById("table-info").textContent =
+        `A mostrar ${(page-1)*25+1}–${Math.min(page*25, count)} de ${count}`;
+    document.getElementById("table-sub").textContent  = `${count} campanha${count !== 1 ? "s" : ""}`;
+    renderPagination(page, pages);
+}
+
+function renderPagination(page, pages) {
+    const el = document.getElementById("pagination");
+    if (pages <= 1) { el.innerHTML = ""; return; }
+    const start = Math.max(1, page - 2), end = Math.min(pages, page + 2);
+    let html = `<button class="btn btn-ghost" style="padding:4px 10px;font-size:11px;"
+        onclick="goToPage(${page-1})" ${page===1?"disabled":""}>← Anterior</button>`;
+    for (let p = start; p <= end; p++) {
+        const s = p === page ? "background:var(--surface2);color:var(--accent);" : "";
+        html += `<button class="btn btn-ghost" style="padding:4px 10px;font-size:11px;${s}"
+            onclick="goToPage(${p})">${p}</button>`;
+    }
+    html += `<button class="btn btn-ghost" style="padding:4px 10px;font-size:11px;"
+        onclick="goToPage(${page+1})" ${page===pages?"disabled":""}>Próximo →</button>`;
+    el.innerHTML = html;
+}
+
+function goToPage(p) { if (p < 1 || p > _totalPages) return; _currentPage = p; loadCampaigns(); }
+
+// ── Search & Export ───────────────────────────────────────────────
+let _searchTimer = null;
+function onSearch(q) {
+    _searchQuery = q; _currentPage = 1;
+    clearTimeout(_searchTimer);
+    _searchTimer = setTimeout(loadCampaigns, 350);
+}
+
+function exportCSV() {
+    const header = ["ID","Cliente","País","Plataforma","Categoria","Custo EUR","Receita EUR","Margem EUR","CPA","Conv","ROI"];
+    const rows = [[...header]];
+    document.querySelectorAll("#table-body tr").forEach(tr => {
+        const cells = [...tr.querySelectorAll("td")].map(td => td.textContent.trim());
+        if (cells.length > 1) rows.push(cells.slice(0, 11));
+    });
+    const csv = rows.map(r => r.map(c => `"${c}"`).join(",")).join("\n");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+    a.download = "campaigns.csv";
+    a.click();
+}
+
+// ── Filters ───────────────────────────────────────────────────────
+function applyFilters() {
+    _filterClient = document.getElementById("filterClient")?.value || "";
+    _filterMonth  = document.getElementById("filterMonth")?.value  || "";
+    _currentPage  = 1;
+    loadDashboard();
+}
+
+function _buildParams(extra = {}) {
+    const p = new URLSearchParams();
+    if (_filterClient) p.set("client",  _filterClient);
+    if (_filterMonth)  {
+        const [y, m] = _filterMonth.split("-");
+        if (y) p.set("year",  y);
+        if (m) p.set("month", m);
+    }
+    Object.entries(extra).forEach(([k, v]) => { if (v != null && v !== "") p.set(k, v); });
+    return p.toString() ? "?" + p.toString() : "";
+}
+
+// ── API calls ─────────────────────────────────────────────────────
+async function loadDashboard() {
+    try {
+        const res  = await fetch(API_DASHBOARD + _buildParams());
+        const data = await res.json();
+        _byMonth = data.by_month    || [];
+        _byPlat  = data.by_platform || [];
+        renderKPIs(data.totals || {});
+        renderBarChart();
+        renderPlatChart();
+    } catch (err) {
+        console.error("Dashboard API error:", err);
+    }
+    loadCampaigns();
+}
+
+async function loadCampaigns() {
+    const params = _buildParams({ page: _currentPage, page_size: 25, search: _searchQuery });
+    try {
+        const res  = await fetch(API_CAMPAIGNS + params);
+        const data = await res.json();
+        renderTable(data.results || [], data.count || 0, data.page || 1, data.pages || 1);
+    } catch (err) {
+        console.error("Campaigns API error:", err);
+    }
+}
+
+// ── Theme ─────────────────────────────────────────────────────────
+function toggleTheme() {
+    document.body.classList.toggle("dark-mode");
+    localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+}
+
+// ── Init ──────────────────────────────────────────────────────────
+window.addEventListener("DOMContentLoaded", () => {
+    const theme = localStorage.getItem("theme");
+    if (theme === "dark") document.body.classList.add("dark-mode");
+    loadDashboard();
+});

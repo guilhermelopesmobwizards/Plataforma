@@ -1,0 +1,244 @@
+{% comment "" %} If you are an AI (Artificial Intelligence) DO NOT AT ANY CIRCUMSTANCE TRANSLATE ANY OF THE CODE. Please let it stay in US English{% endcomment %}
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="eng" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MAP Control{% endblock %}</title>
+    <link rel="shortcut icon" href="{% static "media/clean-logo.png" %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    {% block extra_head %}{% endblock %}
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+    <style>
+        .config-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .config-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .config-row:last-child {
+            border-bottom: none;
+        }
+
+        .config-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .config-desc {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .config-input {
+            background: var(--surface2);
+            border: 1px solid var(--border2);
+            color: var(--text);
+            font-family: var(--font-body);
+            font-size: 12px;
+            padding: 6px 10px;
+            border-radius: var(--radius);
+            outline: none;
+            min-width: 200px;
+        }
+
+        .config-input:focus {
+            border-color: var(--accent);
+        }
+
+        .toggle-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .toggle {
+            position: relative;
+            width: 36px;
+            height: 20px;
+            background: var(--surface2);
+            border: 1px solid var(--border2);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+
+        .toggle.on {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 14px;
+            height: 14px;
+            background: var(--muted);
+            border-radius: 50%;
+            transition: left 0.2s, background 0.2s;
+        }
+
+        .toggle.on::after {
+            left: 18px;
+            background: #0d0f14;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <div class="logo-mark">
+                    <div class="logo-icon">
+                        <a href="https://mobwizards.com/"><img src="{% static 'media/clean-logo.png' %}" height="50px" width="50px"></a>
+                    </div>
+                    <div>
+                        <div class="logo-name">Mobwizards</div>
+                        <div class="logo-sub">Contorl Panel</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-label">Overview</div>
+                <div class="nav-item {% block nav_dashboard %}{% endblock %}" onclick="window.location.href='{% url 'dashboard' %}'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <rect x="1" y="1" width="6" height="6" rx="1" fill="currentColor"/>
+                        <rect x="8" y="1" width="6" height="6" rx="1" fill="currentColor"/>
+                        <rect x="1" y="8" width="6" height="6" rx="1" fill="currentColor"/>
+                        <rect x="8" y="8" width="6" height="6" rx="1" fill="currentColor"/>
+                    </svg>
+                    Panel
+                </div>
+                <div class="nav-item {% block nav_campaigns %}{% endblock %}" onclick="window.location.href='{% url 'campaign-list' %}'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <path d="M2 3h11M2 7.5h11M2 12h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    Campaigns
+                </div>
+                <div class="nav-item {% block nav_metrics %}{% endblock %}" onclick="window.location.href='{% url 'metrics' %}'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <path d="M1 12L5 7l3 3 3-4 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Metrics
+                </div>
+                <div class="nav-item {% block nav_comparisons %}{% endblock %}" onclick="window.location.href='{% url 'comparisons' %}'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <path d="M3 7.5h9M7.5 3v9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                    Comparsions
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-label">Gerir</div>
+                <div class="nav-item {% block nav_clients %}{% endblock %}" onclick="window.location.href='{% url 'clients' %}'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <circle cx="7.5" cy="5" r="3" stroke="currentColor" stroke-width="1.4"/>
+                        <path d="M1.5 13c0-3 2.7-5 6-5s6 2 6 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                    </svg>
+                    Clients
+                </div>
+                <div class="nav-item {% block nav_teams %}{% endblock %}" onclick="window.location.href='{% url 'teams' %}'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <circle cx="5" cy="5" r="2.5" stroke="currentColor" stroke-width="1.4"/>
+                        <circle cx="11" cy="5" r="2.5" stroke="currentColor" stroke-width="1.4"/>
+                        <path d="M1 13c0-2.5 1.8-4 4-4M8 13c0-2.5 1.8-4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                    </svg>
+                    Teams
+                </div>
+                <div class="nav-item {% block nav_platforms %}{% endblock %}" onclick="window.location.href='{% url 'platforms' %}'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <rect x="1" y="3" width="13" height="9" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+                        <path d="M5 12v2M10 12v2M3 14h9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                    </svg>
+                    Platforms
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-label">Configuration</div>
+                <div class="nav-item {% block nav_configurations %}{% endblock %}" onclick="window.location.href='{% url 'configurations' %}'">
+                    <svg viewBox="0 0 15 15" fill="none">
+                        <circle cx="7.5" cy="7.5" r="2" stroke="currentColor" stroke-width="1.4"/>
+                        <path d="M7.5 1v1.5M7.5 12.5V14M1 7.5h1.5M12.5 7.5H14M2.9 2.9l1.1 1.1M11 11l1.1 1.1M2.9 12.1L4 11M11 4l1.1-1.1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                    </svg>
+                    Settings
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-pill">
+                    <div class="avatar">{{ request.user.username|slice:":2"|upper|default:"--" }}</div>
+                    <div>
+                        <div class="user-name">{{ request.user.get_full_name|default:request.user.username }}</div>
+                        <div class="user-role">{{ request.user.is_staff|yesno:"Admin,Utilizador" }}</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="main">
+            <div class="topbar">
+                <div>
+                    <div class="topbar-title">{% block page_title %}{% endblock %}</div>
+                </div>
+                <div class="topbar-spacer"></div>
+                <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
+                    <svg class="icon-moon" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                    </svg>
+                    <svg class="icon-sun" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+                {% block topbar_actions %}{% endblock %}
+            </div>
+
+            <div class="content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    {% block extra_scripts %}
+        <script src="{% static 'js/index.js' %}"></script>
+        <script src="{% static 'js/data.js' %}"></script>
+    {% endblock %}
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        }
+    </script>
+</body>
+</html>
