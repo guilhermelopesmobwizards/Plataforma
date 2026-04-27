@@ -1,0 +1,166 @@
+{% extends "endmonthapp/base.html" %}
+{% load static %}
+
+{% block title %}MAP Control — Metrics{% endblock %}
+{% block page_title %}Metrics{% endblock %}
+{% block nav_metrics %}active{% endblock %}
+{% block extra_head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+{% endblock %}
+{% block topbar_actions %}
+<div class="filter-row">
+    <select class="filter-select">
+        <option>Todos os Clients</option>
+        <option>Acme Corp</option>
+        <option>Beta Media</option>
+        <option>Gamma Ads</option>
+        <option>Delta Group</option>
+        <option>Epsilon Co</option>
+    </select>
+    <select class="filter-select">
+        <option>Últimos 6 meses</option>
+        <option>Últimos 3 meses</option>
+        <option>Este mês</option>
+        <option>Este ano</option>
+    </select>
+    <button class="btn btn-ghost">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M1 3h10M3 6h6M5 9h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+        Filtrar
+    </button>
+    <button class="btn btn-ghost">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+            <path d="M1 2.5h9M3 5.5h5M4.5 8.5h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+        </svg>
+        Exportar
+    </button>
+</div>
+{% endblock %}
+{% block content %}
+
+
+<div class="kpi-grid">
+    <div class="kpi-card">
+        <div class="kpi-label">CPA Médio</div>
+        <div class="kpi-value accent" id="kpi-cpa">—</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-label">ROAS Médio</div>
+        <div class="kpi-value positive" id="kpi-roas">—</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-label">Total Conversões</div>
+        <div class="kpi-value" id="kpi-conv">—</div>
+    </div>
+</div>
+
+<div class="grid-2">
+    <div class="panel">
+        <div class="panel-head">
+            <div>
+                <div class="panel-title">Evolução de Conversões</div>
+                <div class="panel-sub">Últimos 6 meses</div>
+            </div>
+            <div class="tabs">
+                <div class="tab active">Total</div>
+                <div class="tab">Por Plataforma</div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="chart-wrap">
+                <canvas id="convChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-head">
+            <div>
+                <div class="panel-title">CPA por Plataforma</div>
+                <div class="panel-sub">Custo por Aquisição — Apr 2025</div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="chart-wrap">
+                <canvas id="cpaChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="grid-2">
+    <div class="panel">
+        <div class="panel-head">
+            <div>
+                <div class="panel-title">ROAS por Cliente</div>
+                <div class="panel-sub">Return on Ad Investimento — Apr 2025</div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="mini-list" id="roas-list"></div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-head">
+            <div>
+                <div class="panel-title">CTR por Categoria</div>
+                <div class="panel-sub">Taxa de Cliques — Apr 2025</div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div style="display:flex;flex-direction:column;gap:14px;padding-top:4px;">
+                <div>
+                    <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px;">
+                        <span>E-Commerce</span><span
+                            style="font-family:var(--font-mono);color:var(--accent2);">6.24%</span>
+                    </div>
+                    <div class="pct-bar">
+                        <div class="pct-fill" style="width:62%;background:var(--accent2);"></div>
+                    </div>
+                </div>
+                <div>
+                    <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px;">
+                        <span>Lead Gen</span><span
+                            style="font-family:var(--font-mono);color:var(--accent2);">5.81%</span>
+                    </div>
+                    <div class="pct-bar">
+                        <div class="pct-fill" style="width:58%;background:var(--accent);"></div>
+                    </div>
+                </div>
+                <div>
+                    <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px;">
+                        <span>Retargeting</span><span
+                            style="font-family:var(--font-mono);color:var(--accent2);">5.43%</span>
+                    </div>
+                    <div class="pct-bar">
+                        <div class="pct-fill" style="width:54%;background:#6091fa;"></div>
+                    </div>
+                </div>
+                <div>
+                    <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px;">
+                        <span>Marca</span><span style="font-family:var(--font-mono);color:var(--warning);">3.92%</span>
+                    </div>
+                    <div class="pct-bar">
+                        <div class="pct-fill" style="width:39%;background:var(--warning);"></div>
+                    </div>
+                </div>
+                <div>
+                    <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px;">
+                        <span>Awareness</span><span
+                            style="font-family:var(--font-mono);color:var(--danger);">2.11%</span>
+                    </div>
+                    <div class="pct-bar">
+                        <div class="pct-fill" style="width:21%;background:var(--danger);"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/metrics.js' %}"></script>
+{% endblock %}

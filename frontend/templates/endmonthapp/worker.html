@@ -1,0 +1,170 @@
+{% extends "endmonthapp/base.html" %}
+{% load static %}
+
+{% block title %}MAP Control — Teams{% endblock %}
+{% block page_title %}Worker{% endblock %}
+{% block nav_teams %}active{% endblock %}
+{% block topbar_actions %}
+<div class="filter-row">
+    <input type="text" placeholder="Search member..."
+        style="background:var(--surface2);border:1px solid var(--border2);color:var(--text);font-family:var(--font-body);font-size:12px;padding:6px 10px;border-radius:var(--radius);outline:none;width:180px;">
+    <select class="filter-select">
+        <option>Todas as Teams</option>
+        <option>Performance</option>
+        <option>Criativo</option>
+        <option>Análises</option>
+    </select>
+    <button class="btn btn-primary">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+        Novo Membro
+    </button>
+</div>
+{% endblock %}
+{% block content %}
+
+
+<div class="kpi-grid">
+    <div class="kpi-card">
+        <div class="kpi-label">Total Membros</div>
+        <div class="kpi-value accent">18</div>
+        <div class="kpi-delta delta-up">▲ 1 este mês</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-label">Teams</div>
+        <div class="kpi-value">3</div>
+        <div class="kpi-sub">Performance · Criativo · Análises</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-label">Camp./Membro</div>
+        <div class="kpi-value positive">7.9</div>
+        <div class="kpi-delta delta-up">▲ 0.6 vs mês ant.</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-label">Clients/Gestor</div>
+        <div class="kpi-value">4.8</div>
+        <div class="kpi-sub">Média por gestor</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-label">Satisfação</div>
+        <div class="kpi-value positive">88%</div>
+        <div class="kpi-delta delta-up">▲ 3%</div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-head">
+        <div>
+            <div class="panel-title">Membros da Equipa</div>
+            <div class="panel-sub">18 colaboradores activos</div>
+        </div>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Membro</th>
+                    <th>Equipa</th>
+                    <th>Role</th>
+                    <th class="num">Clients</th>
+                    <th class="num">Campaigns</th>
+                    <th class="num">Receita Gerida (Abr)</th>
+                    <th class="num">ROI Médio</th>
+                    <th>Email</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <div class="avatar" style="background:linear-gradient(135deg,#c8f135,#4ade80);">--</div>
+                            <div>
+                                <div style="font-size:12px;font-weight:500;">--Nome--</div>
+                                <div style="font-size:10px;color:var(--muted);">desde Jan 2023</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="tag tag-green">Performance</span></td>
+                    <td>Líder de Equipa</td>
+                    <td class="num">6</td>
+                    <td class="num">48</td>
+                    <td class="num">€ 520K</td>
+                    <td class="num"><span style="color:var(--accent2);">4.41×</span></td>
+                    <td style="color:var(--muted);font-size:11px;">--@email.com</td>
+                    <td><span class="tag tag-green"><span class="status-dot dot-green"></span>Ativo</span></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <div class="avatar" style="background:linear-gradient(135deg,#6091fa,#a78bfa);">--</div>
+                            <div>
+                                <div style="font-size:12px;font-weight:500;">--Nome--</div>
+                                <div style="font-size:10px;color:var(--muted);">desde Mar 2023</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="tag tag-blue">Análises</span></td>
+                    <td>Analista</td>
+                    <td class="num">4</td>
+                    <td class="num">32</td>
+                    <td class="num">€ 310K</td>
+                    <td class="num"><span style="color:var(--accent2);">3.98×</span></td>
+                    <td style="color:var(--muted);font-size:11px;">--@email.com</td>
+                    <td><span class="tag tag-green"><span class="status-dot dot-green"></span>Ativo</span></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <div class="avatar" style="background:linear-gradient(135deg,#fbbf24,#f87171);">--</div>
+                            <div>
+                                <div style="font-size:12px;font-weight:500;">--Nome--</div>
+                                <div style="font-size:10px;color:var(--muted);">desde Jul 2024</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="tag tag-amber">Criativo</span></td>
+                    <td>Designer</td>
+                    <td class="num">3</td>
+                    <td class="num">21</td>
+                    <td class="num">€ 198K</td>
+                    <td class="num"><span style="color:var(--warning);">3.41×</span></td>
+                    <td style="color:var(--muted);font-size:11px;">--@email.com</td>
+                    <td><span class="tag tag-green"><span class="status-dot dot-green"></span>Ativo</span></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <div class="avatar" style="background:linear-gradient(135deg,#a78bfa,#60a5fa);">--</div>
+                            <div>
+                                <div style="font-size:12px;font-weight:500;">--Nome--</div>
+                                <div style="font-size:10px;color:var(--muted);">desde Apr 2025</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="tag tag-green">Performance</span></td>
+                    <td>Especialista</td>
+                    <td class="num">1</td>
+                    <td class="num">5</td>
+                    <td class="num">€ 48K</td>
+                    <td class="num"><span style="color:var(--muted);">—</span></td>
+                    <td style="color:var(--muted);font-size:11px;">--@email.com</td>
+                    <td><span class="tag tag-amber"><span class="status-dot dot-amber"></span>Onboarding</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div
+        style="display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-top:1px solid var(--border);font-size:11px;color:var(--muted);">
+        <span>A mostrar 1–12 de 18</span>
+        <div style="display:flex;gap:4px;">
+            <button class="btn btn-ghost" style="padding:4px 10px;font-size:11px;">← Anterior</button>
+            <button class="btn btn-ghost"
+                style="padding:4px 10px;font-size:11px;background:var(--surface2);color:var(--accent);">1</button>
+            <button class="btn btn-ghost" style="padding:4px 10px;font-size:11px;">2</button>
+            <button class="btn btn-ghost" style="padding:4px 10px;font-size:11px;">Próximo →</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

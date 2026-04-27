@@ -1,0 +1,256 @@
+{% extends "endmonthapp/base.html" %}
+{% load static %}
+
+{% block title %}MAP Control — Configurations{% endblock %}
+{% block page_title %}Configurations{% endblock %}
+{% block nav_configurations %}active{% endblock %}
+{% block topbar_actions %}
+<div class="filter-row">
+                    <button class="btn btn-primary" onclick="saveSettings()">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                            <path d="M1 6l3.5 3.5L11 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        Guardar
+                    </button>
+                </div>
+{% endblock %}
+{% block content %}
+
+
+                <div class="grid-2">
+
+                    <!-- Perfil -->
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <div class="panel-title">Perfil</div>
+                                <div class="panel-sub">Informações da conta</div>
+                            </div>
+                        </div>
+                        <div class="config-section">
+                            <div class="config-row">
+                                <div>
+                                    <div class="config-label">Nome</div>
+                                    <div class="config-desc">Nome de exibição na plataforma</div>
+                                </div>
+                                <input type="text" class="config-input" placeholder="--UserName--">
+                            </div>
+                            <div class="config-row">
+                                <div>
+                                    <div class="config-label">Email</div>
+                                    <div class="config-desc">Email de acesso e notificações</div>
+                                </div>
+                                <input type="email" class="config-input" placeholder="--@email.com">
+                            </div>
+                            <div class="config-row">
+                                <div>
+                                    <div class="config-label">Role</div>
+                                    <div class="config-desc">Função na organização</div>
+                                </div>
+                                <select class="config-input" style="min-width:200px;">
+                                    <option>Admin</option>
+                                    <option>Manager</option>
+                                    <option>Analyst</option>
+                                    <option>Viewer</option>
+                                </select>
+                            </div>
+                            <div class="config-row">
+                                <div>
+                                    <div class="config-label">Idioma</div>
+                                    <div class="config-desc">Idioma da interface</div>
+                                </div>
+                                <select class="config-input" style="min-width:200px;">
+                                    <option>Português (PT)</option>
+                                    <option>English (EN)</option>
+                                    <option>Español (ES)</option>
+                                </select>
+                            </div>
+                            <div class="config-row">
+                                <div>
+                                    <div class="config-label">Fuso Horário</div>
+                                    <div class="config-desc">Utilizado em relatórios e agendamentos</div>
+                                </div>
+                                <select class="config-input" style="min-width:200px;">
+                                    <option>Europe/Lisbon (UTC+1)</option>
+                                    <option>Europe/London (UTC+0)</option>
+                                    <option>Europe/Paris (UTC+2)</option>
+                                    <option>America/New_York (UTC-5)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notificações -->
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <div class="panel-title">Notificações</div>
+                                <div class="panel-sub">Gerir alertas e avisos</div>
+                            </div>
+                        </div>
+                        <div class="config-section">
+                            <div class="config-row">
+                                <div>
+                                    <div class="config-label">Relatório Diário</div>
+                                    <div class="config-desc">Resumo de performance enviado por email</div>
+                                </div>
+                                <div class="toggle-wrap">
+                                    <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+                                </div>
+                            </div>
+                            <div class="config-row">
+                                <div>
+                                    <div class="config-label">Alertas de Budget</div>
+                                    <div class="config-desc">Notificar quando spend exceder limite</div>
+                                </div>
+                                <div class="toggle-wrap">
+                                    <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+                                </div>
+                            </div>
+                            <div class="config-row">
+                                <div>
+                                    <div class="config-label">Campaigns Pausadas</div>
+                                    <div class="config-desc">Alertar quando campanha for pausada</div>
+                                </div>
+                                <div class="toggle-wrap">
+                                    <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+                                </div>
+                            </div>
+                            <div class="config-row">
+                                <div>
+                                    <div class="config-label">ROI Abaixo do Target</div>
+                                    <div class="config-desc">Alertar quando ROI ficar abaixo do mínimo</div>
+                                </div>
+                                <div class="toggle-wrap">
+                                    <div class="toggle" onclick="this.classList.toggle('on')"></div>
+                                </div>
+                            </div>
+                            <div class="config-row">
+                                <div>
+                                    <div class="config-label">Relatório Semanal</div>
+                                    <div class="config-desc">Relatório consolidado às segundas-feiras</div>
+                                </div>
+                                <div class="toggle-wrap">
+                                    <div class="toggle" onclick="this.classList.toggle('on')"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="grid-2">
+
+                    <!-- Integrações -->
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <div class="panel-title">Integrações de Plataforma</div>
+                                <div class="panel-sub">Gerir ligações a plataformas de anúncios</div>
+                            </div>
+                            <button class="btn btn-ghost" style="font-size:11px;">
+                                <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                                    <path d="M5.5 1v9M1 5.5h9" stroke="currentColor" stroke-width="1.4"
+                                        stroke-linecap="round" />
+                                </svg>
+                                Adicionar
+                            </button>
+                        </div>
+                        <div class="config-section">
+                            <div class="config-row">
+                                <div style="display:flex;align-items:center;gap:10px;">
+                                    <div
+                                        style="width:28px;height:28px;border-radius:6px;background:rgba(96,145,250,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#6091fa;">
+                                        G</div>
+                                    <div>
+                                        <div class="config-label">Google Ads</div>
+                                        <div class="config-desc">Ligado — --account-id--</div>
+                                    </div>
+                                </div>
+                                <span class="tag tag-green"><span class="status-dot dot-green"></span>Activo</span>
+                            </div>
+                            <div class="config-row">
+                                <div style="display:flex;align-items:center;gap:10px;">
+                                    <div
+                                        style="width:28px;height:28px;border-radius:6px;background:rgba(200,241,53,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#c8f135;">
+                                        M</div>
+                                    <div>
+                                        <div class="config-label">Meta Ads</div>
+                                        <div class="config-desc">Ligado — --account-id--</div>
+                                    </div>
+                                </div>
+                                <span class="tag tag-green"><span class="status-dot dot-green"></span>Activo</span>
+                            </div>
+                            <div class="config-row">
+                                <div style="display:flex;align-items:center;gap:10px;">
+                                    <div
+                                        style="width:28px;height:28px;border-radius:6px;background:rgba(167,139,250,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#a78bfa;">
+                                        T</div>
+                                    <div>
+                                        <div class="config-label">TikTok Ads</div>
+                                        <div class="config-desc">Ligado — --account-id--</div>
+                                    </div>
+                                </div>
+                                <span class="tag tag-green"><span class="status-dot dot-green"></span>Activo</span>
+                            </div>
+                            <div class="config-row">
+                                <div style="display:flex;align-items:center;gap:10px;">
+                                    <div
+                                        style="width:28px;height:28px;border-radius:6px;background:rgba(107,114,128,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#9ca3af;">
+                                        +</div>
+                                    <div>
+                                        <div class="config-label">Nova Integração</div>
+                                        <div class="config-desc">LinkedIn, Pinterest, Snapchat...</div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-ghost" style="font-size:11px;">Ligar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Segurança -->
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <div class="panel-title">Segurança & Acesso</div>
+                                <div class="panel-sub">Palavras-passe e autenticação</div>
+                            </div>
+                        </div>
+                        <div class="config-section">
+                            <div class="config-row">
+                                <div>
+                                    <div class="config-label">Palavra-passe Actual</div>
+                                    <div class="config-desc">Introduza a palavra-passe actual</div>
+                                </div>
+                                <input type="password" class="config-input" placeholder="••••••••">
+                            </div>
+                            <div class="config-row">
+                                <div>
+                                    <div class="config-label">Nova Palavra-passe</div>
+                                    <div class="config-desc">Mínimo 8 caracteres</div>
+                                </div>
+                                <input type="password" class="config-input" placeholder="••••••••">
+                            </div>
+                            <div class="config-row">
+                                <div>
+                                    <div class="config-label">Autenticação 2FA</div>
+                                    <div class="config-desc">Protecção extra com código de verificação</div>
+                                </div>
+                                <div class="toggle-wrap">
+                                    <div class="toggle" onclick="this.classList.toggle('on')"></div>
+                                </div>
+                            </div>
+                            <div class="config-row">
+                                <div>
+                                    <div class="config-label">Sessões Activas</div>
+                                    <div class="config-desc">1 sessão activa neste momento</div>
+                                </div>
+                                <button class="btn btn-ghost" style="font-size:11px;color:var(--danger);">Terminar
+                                    Todas</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+{% endblock %}

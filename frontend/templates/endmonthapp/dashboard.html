@@ -1,0 +1,179 @@
+{% extends "endmonthapp/base.html" %}
+{% load static %}
+
+{% block title %}MOBControl — Panel{% endblock %}
+{% block page_title %}Panel{% endblock %}
+{% block nav_dashboard %}active{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+{% endblock %}
+
+{% block topbar_actions %}
+<div class="filter-row">
+    <select class="filter-select" id="filterClient">
+        <option value="">All Clients</option>
+        {% for c in clients %}
+        <option value="{{ c.id }}">{{ c.name|default:c.code }}</option>
+        {% endfor %}
+    </select>
+
+    <select class="filter-select" id="filterMonth">
+        <option value="">All Months</option>
+        {% for m in months %}
+        <option value="{{ m.month_date|date:'Y-m' }}">{{ m.label|default:m.month_date }}</option>
+        {% endfor %}
+    </select>
+
+    <button class="btn btn-ghost" onclick="applyFilters()">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M1 3h10M3 6h6M5 9h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+        Filtrar
+    </button>
+
+    <button class="btn btn-import-excel" id="importExcelBtn"
+            onclick="document.getElementById('excelFileInput').click()">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+            <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
+        </svg>
+        Import Excel
+    </button>
+    <input type="file" id="excelFileInput" accept=".xlsx,.xls"
+           style="display:none" onchange="handleExcelImport(this)">
+
+    <button class="btn btn-primary">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+        Nova Campanha
+    </button>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="kpi-grid">
+    <div class="kpi-card">
+        <div class="kpi-label">Campaigns</div>
+        <div class="kpi-value accent" id="kpi-campaigns">—</div>
+        <div class="kpi-delta" id="kpi-campaigns-delta"></div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-label">Conversões</div>
+        <div class="kpi-value" id="kpi-conv">—</div>
+        <div class="kpi-delta" id="kpi-conv-delta"></div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-label">Receita EUR</div>
+        <div class="kpi-value positive" id="kpi-revenue">—</div>
+        <div class="kpi-delta" id="kpi-revenue-delta"></div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-label">Margem EUR</div>
+        <div class="kpi-value" id="kpi-margin">—</div>
+        <div class="kpi-delta" id="kpi-margin-delta"></div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-label">ROI Médio</div>
+        <div class="kpi-value positive" id="kpi-roi">—</div>
+        <div class="kpi-delta" id="kpi-roi-delta"></div>
+    </div>
+</div>
+
+<div class="grid-3-1">
+    <div class="panel">
+        <div class="panel-head">
+            <div>
+                <div class="panel-title">Receita e Custo por Mês</div>
+                <div class="panel-sub">EUR — histórico mensal</div>
+            </div>
+            <div class="tabs">
+                <div class="tab active" onclick="switchChartTab(this,'revenue')">Receita</div>
+                <div class="tab" onclick="switchChartTab(this,'cost')">Custo</div>
+                <div class="tab" onclick="switchChartTab(this,'margin')">Margem</div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="chart-wrap"><canvas id="revChart"></canvas></div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-head">
+            <div>
+                <div class="panel-title">Por Plataforma</div>
+                <div class="panel-sub">Distribuição de custo</div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="chart-wrap" style="height:160px;"><canvas id="platChart"></canvas></div>
+            <div id="plat-legend" style="margin-top:14px;display:flex;flex-direction:column;gap:6px;"></div>
+        </div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="panel-head">
+        <div>
+            <div class="panel-title">Campaigns Recentes</div>
+            <div class="panel-sub" id="table-sub">—</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+            <input type="text" id="searchInput" placeholder="Pesquisar..."
+                style="background:var(--surface2);border:1px solid var(--border2);color:var(--text);font-family:var(--font-body);font-size:12px;padding:6px 10px;border-radius:var(--radius);outline:none;width:180px;"
+                oninput="onSearch(this.value)">
+            <button class="btn btn-ghost" style="font-size:11px;" onclick="exportCSV()">
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                    <path d="M1 2.5h9M3 5.5h5M4.5 8.5h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                </svg>
+                Exportar
+            </button>
+        </div>
+    </div>
+    <div class="table-wrap">
+        <table id="camp-table">
+            <thead>
+                <tr>
+                    <th>ID</th><th>Cliente</th><th>País</th><th>Plataforma</th><th>Categoria</th>
+                    <th class="num">Custo EUR</th><th class="num">Receita EUR</th>
+                    <th class="num">Margem</th><th class="num">CPA</th>
+                    <th class="num">Conv.</th><th class="num">ROI</th><th>Estado</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <tr><td colspan="12" style="text-align:center;padding:32px;color:var(--muted);">
+                    A carregar dados…
+                </td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-top:1px solid var(--border);font-size:11px;color:var(--muted);">
+        <span id="table-info">—</span>
+        <div style="display:flex;gap:4px;" id="pagination"></div>
+    </div>
+</div>
+
+<!-- Excel Import Modal -->
+<div id="importModal" class="import-overlay" style="display:none"
+     role="dialog" aria-modal="true" aria-labelledby="importModalTitle">
+  <div class="import-box">
+    <div class="import-header">
+      <span id="importModalTitle" class="import-title">Import Excel</span>
+      <button class="import-close" onclick="closeImportModal()" aria-label="Close">&times;</button>
+    </div>
+    <div class="import-body" id="importModalBody"></div>
+    <div class="import-footer" id="importModalFooter">
+      <button class="btn btn-ghost" onclick="closeImportModal()">Cancel</button>
+      <button class="btn btn-primary" id="importConfirmBtn">Confirm Import</button>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/index.js' %}"></script>
+<script src="{% static 'js/excel_import.js' %}"></script>
+{% endblock %}

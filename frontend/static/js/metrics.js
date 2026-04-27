@@ -1,0 +1,96 @@
+const API_METRICS = "/app/api/metrics/";
+const CHART_COLORS = ["#60faf2", "#c8f135", "#a78bfa", "#4ade80", "#f97316", "#f43f5e"];
+
+let _convChart = null;
+let _cpaChart = null;
+
+function fmtEur(n) {
+    if (n == null) return "—";
+    n = parseFloat(n);
+    if (n >= 1000) return "€\u00A0" + (n / 1000).toFixed(1) + "K";
+    return "€\u00A0" + n.toFixed(2);
+}
+function fmtNum(n) { return n == null ? "—" : parseInt(n).toLocaleString("pt-PT"); }
+
+async function loadMetrics() {
+    const res = await fetch(API_METRICS);
+    const data = await res.json();
+    const t = data.totals || {};
+
+    document.getElementById("kpi-cpa").textContent = fmtEur(t.avg_cpa);
+    document.getElementById("kpi-roas").textContent = t.avg_roi != null ? parseFloat(t.avg_roi).toFixed(2) + "×" : "—";
+    document.getElementById("kpi-conv").textContent = fmtNum(t.total_conv);
+
+    // Conversions over time chart
+    const months = data.by_month || [];
+    if (_convChart) { _convChart.destroy(); }
+    _convChart = new Chart(document.getElementById("convChart"), {
+        type: "bar",
+        data: {
+            labels: months.map(m => m.label || m.month_date),
+            datasets: [{
+                label: "Conversões",
+                data: months.map(m => m.conv || 0),
+                backgroundColor: "rgba(96,250,242,0.18)",
+                borderColor: "rgba(96,250,242,0.8)",
+                borderWidth: 1.5, borderRadius: 4,
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { grid: { color: "rgba(255,255,255,0.04)" }, ticks: { color: "#6b7280", font: { size: 11 } } },
+                y: { grid: { color: "rgba(255,255,255,0.04)" }, ticks: { color: "#6b7280", font: { size: 10 } } }
+            }
+        }
+    });
+
+    // CPA by platform chart
+    const plats = (data.by_platform || []).filter(p => p.platform_name && parseFloat(p.avg_cpa) > 0);
+    if (_cpaChart) { _cpaChart.destroy(); }
+    _cpaChart = new Chart(document.getElementById("cpaChart"), {
+        type: "bar",
+        data: {
+            labels: plats.map(p => p.platform_name),
+            datasets: [{
+                label: "CPA Médio",
+                data: plats.map(p => parseFloat(p.avg_cpa) || 0),
+                backgroundColor: CHART_COLORS.slice(0, plats.length),
+                borderWidth: 0, borderRadius: 4,
+            }]
+        },
+        options: {
+            indexAxis: "y",
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { grid: { color: "rgba(255,255,255,0.04)" }, ticks: { color: "#6b7280", font: { size: 10 } } },
+                y: { grid: { display: false }, ticks: { color: "#9ca3af", font: { size: 11 } } }
+            }
+        }
+    });
+
+    // ROAS by client list
+    const clients = data.by_client || [];
+    document.getElementById("roas-list").innerHTML = clients.map((c, i) => {
+        const roi = parseFloat(c.avg_roi);
+        const color = roi >= 4 ? "var(--accent2)" : roi >= 3 ? "var(--warning)" : "var(--danger)";
+        const initials = (c.client_name || "?").split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
+        return `<div class="mini-row">
+            <div class="mini-left">
+                <div class="mini-icon" style="background:rgba(96,250,242,0.1);color:var(--accent);">${initials}</div>
+                <div>
+                    <div style="font-size:12px;font-weight:500;">${c.client_name}</div>
+                    <div style="font-size:10px;color:var(--muted);">${c.campaigns} campanha${c.campaigns !== 1 ? "s" : ""}</div>
+                </div>
+            </div>
+            <div class="mini-right">
+                <div class="mini-val" style="color:${color};">${roi.toFixed(2)}×</div>
+                <div class="mini-sub2">ROAS</div>
+            </div>
+        </div>`;
+    }).join("");
+}
+
+window.addEventListener("DOMContentLoaded", loadMetrics);
