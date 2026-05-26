@@ -1,0 +1,70 @@
+import json
+from datetime import date
+
+from celery.result import AsyncResult
+from django.http import JsonResponse
+from django.views import View
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+
+from core.tasks import fetch_monthly_stats, fetch_stats_range
+
+
+def _json_body(request) -> dict:
+    try:
+        return json.loads(request.body) if request.body else {}
+    except json.JSONDecodeError:
+        return {}
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class SyncCurrentMonthView(View):
+    def post(self, request):
+        body = _json_body(request)
+        today = date.today()
+        year = body.get("year", today.year)
+        month = body.get("month", today.month)
+        task = fetch_monthly_stats.delay(year, month)
+        return JsonResponse(
+            {"task_id": task.id, "status": "queued", "year": year, "month": month},
+            status=202,
+        )
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class SyncRangeView(View):
+    def post(self, request):
+        body = _json_body(request)
+        required = ["from_year", "from_month", "to_year", "to_month"]
+        missing = [k for k in required if k not in body]
+        if missing:
+            return JsonResponse({"error": f"Missing fields: {missing}"}, status=400)
+        task = fetch_stats_range.delay(
+            body["from_year"],
+            body["from_month"],
+            body["to_year"],
+            body["to_month"],
+        )
+        return JsonResponse(
+            {
+                "task_id": task.id,
+                "status": "queued",
+                "range": {
+                    "from": f"{body['from_year']}/{body['from_month']:02d}",
+                    "to": f"{body['to_year']}/{body['to_month']:02d}",
+                },
+            },
+            status=202,
+        )
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class TaskStatusView(View):
+    def get(self, request, task_id: str):
+        result = AsyncResult(task_id)
+        payload = {"task_id": task_id, "status": result.status}
+        if result.successful():
+            payload["result"] = result.result
+        elif result.failed():
+            payload["error"] = str(result.result)
+        return JsonResponse(payload)

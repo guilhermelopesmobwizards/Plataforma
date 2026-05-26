@@ -1,0 +1,45 @@
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ("core", "0007_alter_conversion_id"),
+    ]
+
+    operations = [
+        # ── ExchangeRate: add is_locked flag ─────────────────────────────────
+        migrations.AddField(
+            model_name="exchangerate",
+            name="is_locked",
+            field=models.BooleanField(default=False),
+        ),
+        # ── DailyExchangeRate: new table ──────────────────────────────────────
+        migrations.CreateModel(
+            name="DailyExchangeRate",
+            fields=[
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("date", models.DateField()),
+                ("currency", models.CharField(max_length=3)),
+                ("rate", models.DecimalField(decimal_places=6, max_digits=18)),
+            ],
+            options={"db_table": "daily_exchange_rate", "ordering": ["-date", "currency"]},
+        ),
+        migrations.AddConstraint(
+            model_name="dailyexchangerate",
+            constraint=models.UniqueConstraint(
+                fields=["date", "currency"],
+                name="daily_exchange_rate_unique_date_currency",
+            ),
+        ),
+        migrations.AddIndex(
+            model_name="dailyexchangerate",
+            index=models.Index(fields=["date"], name="daily_exrate_date_idx"),
+        ),
+        migrations.AddIndex(
+            model_name="dailyexchangerate",
+            index=models.Index(fields=["currency"], name="daily_exrate_currency_idx"),
+        ),
+    ]

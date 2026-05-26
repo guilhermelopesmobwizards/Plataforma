@@ -1,0 +1,8 @@
+from django.urls import path
+from endofmonth.stats_views import SyncCurrentMonthView, SyncRangeView, TaskStatusView
+
+urlpatterns = [
+    path("sync/current/", SyncCurrentMonthView.as_view(), name="stats-sync-current"),
+    path("sync/range/", SyncRangeView.as_view(), name="stats-sync-range"),
+    path("tasks/<str:task_id>/", TaskStatusView.as_view(), name="stats-task-status"),
+]

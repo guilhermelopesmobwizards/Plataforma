@@ -1,0 +1,66 @@
+const API_DASHBOARD = "/app/api/dashboard/";
+
+let _filterMonth = "";
+
+function fmtEur(n) {
+    if (n == null) return "—";
+    n = parseFloat(n);
+    if (n >= 1_000_000) return "€\u00A0" + (n / 1_000_000).toFixed(2) + "M";
+    if (n >= 1_000) return "€\u00A0" + (n / 1_000).toFixed(1) + "K";
+    return "€\u00A0" + n.toFixed(2);
+}
+function fmtNum(n) { return n == null ? "—" : parseInt(n).toLocaleString("pt-PT"); }
+function fmtRoi(n) { return n == null ? "—" : parseFloat(n).toFixed(2) + "×"; }
+
+function _buildParams() {
+    const p = new URLSearchParams();
+    if (_filterMonth) {
+        const [y, m] = _filterMonth.split("-");
+        if (y) p.set("year", y);
+        if (m) p.set("month", m);
+    }
+    return p.toString() ? "?" + p.toString() : "";
+}
+
+function applyFilters() {
+    _filterMonth = document.getElementById("filterMonth")?.value || "";
+    loadPlatforms();
+}
+
+async function loadPlatforms() {
+    try {
+        const res = await fetch(API_DASHBOARD + _buildParams());
+        const data = await res.json();
+        const totals = data.totals || {};
+        const plats = data.by_platform || [];
+
+        document.getElementById("kpi-platforms").textContent = plats.length || "—";
+        document.getElementById("kpi-cost").textContent = fmtEur(totals.total_cost);
+        document.getElementById("kpi-revenue").textContent = fmtEur(totals.total_revenue);
+        document.getElementById("kpi-roi").textContent = fmtRoi(totals.avg_roi);
+        document.getElementById("kpi-conv").textContent = fmtNum(totals.total_conv);
+
+        const sub = document.getElementById("table-sub");
+        if (sub) sub.textContent = `${plats.length} platform${plats.length !== 1 ? "s" : ""}`;
+
+        document.getElementById("table-body").innerHTML = plats.map(p => {
+            const roi = parseFloat(p.avg_roi || 0);
+            const roiColor = roi >= 0.3 ? "var(--accent2)" : roi >= 0.1 ? "var(--warning)" : "var(--danger)";
+            return `<tr>
+                <td><span class="tag tag-blue">${p.platform_name || "—"}</span></td>
+                <td class="num">${fmtNum(p.campaigns)}</td>
+                <td class="num">${fmtNum(p.conv)}</td>
+                <td class="num">${fmtEur(p.cost)}</td>
+                <td class="num" style="color:var(--accent2);">${fmtEur(p.revenue)}</td>
+                <td class="num">${fmtEur((parseFloat(p.revenue) || 0) - (parseFloat(p.cost) || 0))}</td>
+                <td class="num">${p.avg_cpa != null ? "€ " + parseFloat(p.avg_cpa).toFixed(2) : "—"}</td>
+                <td class="num" style="color:${roiColor};">${fmtRoi(roi)}</td>
+            </tr>`;
+        }).join("") || `<tr><td colspan="8" style="text-align:center;padding:32px;color:var(--muted);">Sem dados.</td></tr>`;
+
+    } catch (err) {
+        console.error("Platforms error:", err);
+    }
+}
+
+window.addEventListener("DOMContentLoaded", loadPlatforms);

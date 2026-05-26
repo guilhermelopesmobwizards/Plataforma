@@ -1,0 +1,88 @@
+import django.db.models.deletion
+import django.utils.timezone
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ("core", "0005_add_exchange_rate"),
+    ]
+
+    operations = [
+        # ── Campaign: drop old constraint, add campaign_id, add new constraint ─
+        migrations.RemoveConstraint(
+            model_name="campaign",
+            name="campaign_unique_combination",
+        ),
+        migrations.AddField(
+            model_name="campaign",
+            name="campaign_id",
+            field=models.CharField(blank=True, max_length=50, null=True),
+        ),
+        migrations.AddConstraint(
+            model_name="campaign",
+            constraint=models.UniqueConstraint(
+                fields=["month", "campaign_id"],
+                name="campaign_unique_campaign_id",
+            ),
+        ),
+        # ── Metric: add v2 fields ─────────────────────────────────────────────
+        migrations.AddField(
+            model_name="metric",
+            name="cost_ts_currency",
+            field=models.CharField(blank=True, max_length=10, null=True),
+        ),
+        migrations.AddField(
+            model_name="metric",
+            name="convs_google",
+            field=models.IntegerField(blank=True, null=True),
+        ),
+        migrations.AddField(
+            model_name="metric",
+            name="convs_mob",
+            field=models.IntegerField(blank=True, null=True),
+        ),
+        migrations.AddField(
+            model_name="metric",
+            name="revenue",
+            field=models.DecimalField(blank=True, decimal_places=4, max_digits=14, null=True),
+        ),
+        migrations.AddField(
+            model_name="metric",
+            name="revenue_currency",
+            field=models.CharField(blank=True, max_length=10, null=True),
+        ),
+        # ── Conversion: new table ─────────────────────────────────────────────
+        migrations.CreateModel(
+            name="Conversion",
+            fields=[
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("campaign", models.ForeignKey(
+                    db_column="id_campaign",
+                    on_delete=django.db.models.deletion.CASCADE,
+                    related_name="conversions",
+                    to="core.campaign",
+                )),
+                ("operator", models.CharField(blank=True, default="", max_length=200)),
+                ("event", models.CharField(blank=True, default="", max_length=200)),
+                ("count", models.IntegerField(default=0)),
+                ("revenue", models.DecimalField(blank=True, decimal_places=4, max_digits=14, null=True)),
+                ("payout", models.DecimalField(blank=True, decimal_places=4, max_digits=14, null=True)),
+                ("payout_currency", models.CharField(blank=True, max_length=10, null=True)),
+                ("payout_start_date", models.DateField(blank=True, null=True)),
+                ("payout_end_date", models.DateField(blank=True, null=True)),
+                ("math", models.TextField(blank=True, null=True)),
+            ],
+            options={"db_table": "conversion"},
+        ),
+        migrations.AddConstraint(
+            model_name="conversion",
+            constraint=models.UniqueConstraint(
+                fields=["campaign", "operator", "event", "payout_start_date"],
+                name="conversion_unique_row",
+            ),
+        ),
+    ]
